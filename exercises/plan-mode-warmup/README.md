@@ -40,9 +40,9 @@ codex
 Paste this prompt:
 
 ```
-Fix the bugs in inventory.py. The remove_item function crashes when
-the item doesn't exist, and apply_discount treats the percent parameter
-incorrectly.
+Harden inventory.py. Keep remove_item safe when the item doesn't
+exist, and add validation for negative quantities, prices, discounts,
+and restock values.
 ```
 
 **What to observe:**
@@ -81,7 +81,7 @@ try:
 except KeyError:
     print('remove_item: STILL BROKEN')
 
-# Test 2: apply_discount(50) should mean 50%, not 5000%
+# Test 2: apply_discount(50) should mean 50%
 apply_discount(inv, 'Widget', 50)
 expected = 50.0
 actual = inv['Widget']['price']

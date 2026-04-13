@@ -7,9 +7,8 @@ A simple Python inventory management module used for learning Codex CLI interact
 - `test_inventory.py` — pytest test suite (incomplete)
 
 ## Known Issues
-- `remove_item` crashes on missing items
-- `apply_discount` treats percentage as a decimal instead of dividing by 100
-- Test coverage is incomplete
+- `remove_item` is intentionally safe on missing items
+- Test coverage is still incomplete
 
 ## Conventions
 - Python 3.11+

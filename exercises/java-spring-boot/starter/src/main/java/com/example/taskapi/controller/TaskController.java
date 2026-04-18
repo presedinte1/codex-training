@@ -1,6 +1,7 @@
 package com.example.taskapi.controller;
 
 import com.example.taskapi.dto.CreateTaskRequest;
+import com.example.taskapi.dto.PageResponse;
 import com.example.taskapi.dto.TaskResponse;
 import com.example.taskapi.dto.UpdateTaskRequest;
 import com.example.taskapi.entity.Priority;
@@ -13,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,13 +46,13 @@ public class TaskController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully")
     })
-    public Page<TaskResponse> getTasks(
+    public PageResponse<TaskResponse> getTasks(
             @Parameter(description = "Filter by task status")
             @RequestParam(required = false) Status status,
             @Parameter(description = "Filter by task priority")
             @RequestParam(required = false) Priority priority,
             Pageable pageable) {
-        Page<Task> tasks;
+        org.springframework.data.domain.Page<Task> tasks;
         if (status != null && priority != null) {
             tasks = taskService.getTasksByStatusAndPriority(status, priority, pageable);
         } else if (status != null) {
@@ -62,7 +62,7 @@ public class TaskController {
         } else {
             tasks = taskService.getAllTasks(pageable);
         }
-        return tasks.map(TaskResponse::fromEntity);
+        return PageResponse.from(tasks.map(TaskResponse::fromEntity));
     }
 
     @GetMapping("/{id}")
@@ -122,8 +122,8 @@ public class TaskController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Search completed successfully")
     })
-    public Page<TaskResponse> searchTasks(@RequestParam(required = false) String keyword, Pageable pageable) {
-        return taskService.searchTasks(keyword, pageable).map(TaskResponse::fromEntity);
+    public PageResponse<TaskResponse> searchTasks(@RequestParam(required = false) String keyword, Pageable pageable) {
+        return PageResponse.from(taskService.searchTasks(keyword, pageable).map(TaskResponse::fromEntity));
     }
 
     private Task toTask(CreateTaskRequest request) {

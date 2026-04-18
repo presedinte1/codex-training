@@ -20,6 +20,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private static final int MAX_REQUESTS_PER_WINDOW = 100;
     private static final long WINDOW_MILLIS = 60_000L;
+    private static final int HTTP_TOO_MANY_REQUESTS = 429;
 
     private final ObjectMapper objectMapper;
     private final ConcurrentMap<String, Window> windows = new ConcurrentHashMap<>();
@@ -61,12 +62,12 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private void writeRateLimitResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTimestamp(Instant.now());
-        errorResponse.setStatus(HttpServletResponse.SC_TOO_MANY_REQUESTS);
+        errorResponse.setStatus(HTTP_TOO_MANY_REQUESTS);
         errorResponse.setError("Too Many Requests");
         errorResponse.setMessage("Rate limit exceeded. Please try again later.");
         errorResponse.setPath(request.getRequestURI());
 
-        response.setStatus(HttpServletResponse.SC_TOO_MANY_REQUESTS);
+        response.setStatus(HTTP_TOO_MANY_REQUESTS);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }

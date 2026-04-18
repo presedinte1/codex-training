@@ -30,6 +30,13 @@ open http://localhost:8080/h2-console
 
 # Access Swagger UI (after adding endpoints)
 open http://localhost:8080/swagger-ui.html
+
+# Basic auth for API endpoints
+# username: admin
+# password: admin123
+
+# Example authenticated request
+curl -u admin:admin123 http://localhost:8080/api/v1/tasks
 ```
 
 ## First Codex Prompt

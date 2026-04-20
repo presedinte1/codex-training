@@ -109,6 +109,10 @@ Add caching, rate limiting, and basic security configuration
 - [ ] Swagger UI accessible at /swagger-ui.html
 - [ ] Code follows Spring Boot best practices
 
+## Architecture Diagrams
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for Mermaid diagrams covering the system overview, request flow, domain model, package structure, and runtime responsibilities.
+
 ## Advanced Challenges
 
 1. Add authentication with Spring Security and JWT
